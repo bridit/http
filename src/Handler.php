@@ -4,10 +4,9 @@ namespace Brid\Http;
 
 use Slim\App;
 use Exception;
-use Brid\Http\Request;
 use DI\Bridge\Slim\Bridge as SlimBridge;
-use Brid\Http\Handlers\Exceptions\ShutdownHandler;
-use Brid\Http\Handlers\Exceptions\HttpErrorHandler;
+use Brid\Http\Exceptions\ShutdownHandler;
+use Brid\Http\Exceptions\HttpErrorHandler;
 use Brid\Http\Middleware\BodyParsingMiddleware;
 
 class Handler extends \Brid\Core\Handlers\Handler

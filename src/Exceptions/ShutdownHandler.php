@@ -1,6 +1,6 @@
 <?php
 
-namespace Brid\Http\Handlers\Exceptions;
+namespace Brid\Http\Exceptions;
 
 use Slim\ResponseEmitter;
 use Slim\Exception\HttpInternalServerErrorException;
