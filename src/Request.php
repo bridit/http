@@ -435,7 +435,7 @@ class Request extends GuzzleHttpRequest implements ServerRequestInterface
    */
   public function pjax()
   {
-    return $this->getHeader('X-PJAX') == true;
+    return $this->header('X-PJAX') == true;
   }
 
   /**
@@ -445,7 +445,7 @@ class Request extends GuzzleHttpRequest implements ServerRequestInterface
    */
   public function header(string $key, mixed $default = null): mixed
   {
-    $value = $this->header($key);
+    $value = $this->getHeaderLine($key);
 
     return !blank($value) ? $value : $default;
   }
