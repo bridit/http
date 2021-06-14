@@ -91,6 +91,8 @@ class Handler extends \Brid\Core\Handlers\Handler
   public function handle($event = null, $context = null)
   {
 
+    define('APP_HANDLER_TYPE', 'http');
+
     $app = $this->getSlimInstance();
     
     parent::handle($event, $context);
