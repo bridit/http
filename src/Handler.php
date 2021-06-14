@@ -14,6 +14,16 @@ class Handler extends \Brid\Core\Handlers\Handler
 
   protected array $middleware = [];
 
+  /**
+   * @inheritDoc
+   */
+  protected function boot(string $basePath = null): static
+  {
+    define('APP_HANDLER_TYPE', 'http');
+
+    return parent::boot($basePath);
+  }
+
   public function withMiddleware(array $middleware): static
   {
     $this->middleware = $middleware;
@@ -90,8 +100,6 @@ class Handler extends \Brid\Core\Handlers\Handler
 
   public function handle($event = null, $context = null)
   {
-
-    define('APP_HANDLER_TYPE', 'http');
 
     $app = $this->getSlimInstance();
     
