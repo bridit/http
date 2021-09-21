@@ -4,6 +4,7 @@ namespace Brid\Http;
 
 use GuzzleHttp\Psr7\Uri;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use GuzzleHttp\Psr7\UploadedFile;
 use Psr\Http\Message\UriInterface;
@@ -33,7 +34,7 @@ use Brid\Http\Concerns\InteractsWithContentTypes;
 class Request extends GuzzleHttpRequest implements ServerRequestInterface
 {
 
-  use InteractsWithHeaders, InteractsWithContentTypes;
+  use InteractsWithHeaders, InteractsWithContentTypes, Macroable;
 
   /**
    * @var array
