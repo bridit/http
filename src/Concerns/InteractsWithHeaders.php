@@ -202,4 +202,24 @@ trait InteractsWithHeaders
     return $this->header('x-pjax') == true;
   }
 
+  /**
+   * Get the bearer token from the request headers.
+   *
+   * @return string|null
+   */
+  public function bearerToken()
+  {
+    $header = $this->header('Authorization', '');
+
+    $position = strrpos($header, 'Bearer');
+
+    if ($position === false) {
+      return null;
+    }
+
+    $header = substr($header, $position + 7);
+
+    return str_contains($header, ',') ? strstr(',', $header, true) : $header;
+  }
+
 }
