@@ -2,6 +2,7 @@
 
 namespace Brid\Http;
 
+use Closure;
 use GuzzleHttp\Psr7\Uri;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Macroable;
@@ -16,6 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use GuzzleHttp\Psr7\Request as GuzzleHttpRequest;
 use Brid\Http\Concerns\InteractsWithHeaders;
 use Brid\Http\Concerns\InteractsWithContentTypes;
+use Slim\Routing\RouteContext;
 
 /**
  * Server-side HTTP request
@@ -95,6 +97,20 @@ class Request extends GuzzleHttpRequest implements ServerRequestInterface
    * @var string|null
    */
   protected ?string $preferredFormat = null;
+
+  /**
+   * The user resolver callback.
+   *
+   * @var Closure|null
+   */
+  protected ?Closure $userResolver = null;
+
+  /**
+   * The route resolver callback.
+   *
+   * @var Closure|null
+   */
+  protected ?Closure $routeResolver = null;
 
   /**
    * @param string                               $method       HTTP method
@@ -511,6 +527,85 @@ class Request extends GuzzleHttpRequest implements ServerRequestInterface
   public function getClientUserAgent(): string
   {
     return $this->getServerParams()['HTTP_USER_AGENT'] ?? '';
+  }
+
+  /**
+   * Get the user making the request.
+   *
+   * @param  string|null  $guard
+   * @return mixed
+   */
+  public function user($guard = null)
+  {
+    return call_user_func($this->getUserResolver(), $guard);
+  }
+
+  /**
+   * Get the user resolver callback.
+   *
+   * @return Closure
+   */
+  public function getUserResolver(): Closure
+  {
+    return $this->userResolver ?? function () {
+        //
+      };
+  }
+
+  /**
+   * Set the user resolver callback.
+   *
+   * @param  Closure  $callback
+   * @return $this
+   */
+  public function setUserResolver(Closure $callback): static
+  {
+    $this->userResolver = $callback;
+
+    return $this;
+  }
+
+  /**
+   * Get the route handling the request.
+   *
+   * @param  string|null  $param
+   * @param  mixed  $default
+   * @return \Illuminate\Routing\Route|object|string|null
+   */
+  public function route($param = null, $default = null)
+  {
+    $route = call_user_func($this->getRouteResolver());
+
+    if (is_null($route) || is_null($param)) {
+      return $route;
+    }
+
+    return $route->getArgument($param, $default);
+  }
+
+  /**
+   * Get the route resolver callback.
+   *
+   * @return Closure
+   */
+  public function getRouteResolver(): Closure
+  {
+    return $this->routeResolver ?? function () {
+        return RouteContext::fromRequest($this)->getRoute();
+      };
+  }
+
+  /**
+   * Set the route resolver callback.
+   *
+   * @param  Closure  $callback
+   * @return $this
+   */
+  public function setRouteResolver(Closure $callback): static
+  {
+    $this->routeResolver = $callback;
+
+    return $this;
   }
 
 }
