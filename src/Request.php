@@ -17,6 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use GuzzleHttp\Psr7\Request as GuzzleHttpRequest;
 use Brid\Http\Concerns\InteractsWithHeaders;
 use Brid\Http\Concerns\InteractsWithContentTypes;
+use Slim\Routing\Route;
 use Slim\Routing\RouteContext;
 
 /**
@@ -532,12 +533,12 @@ class Request extends GuzzleHttpRequest implements ServerRequestInterface
   /**
    * Get the user making the request.
    *
-   * @param  string|null  $guard
+   * @param string|null $guard
    * @return mixed
    */
-  public function user($guard = null)
+  public function user(string $guard = null): mixed
   {
-    return call_user_func($this->getUserResolver(), $guard);
+    return call_user_func_array($this->getUserResolver(), [$this, $guard]);
   }
 
   /**
@@ -568,11 +569,11 @@ class Request extends GuzzleHttpRequest implements ServerRequestInterface
   /**
    * Get the route handling the request.
    *
-   * @param  string|null  $param
-   * @param  mixed  $default
-   * @return \Illuminate\Routing\Route|object|string|null
+   * @param string|null $param
+   * @param mixed|null $default
+   * @return Route|string|null
    */
-  public function route($param = null, $default = null)
+  public function route(string $param = null, mixed $default = null): Route|string|null
   {
     $route = call_user_func($this->getRouteResolver());
 
