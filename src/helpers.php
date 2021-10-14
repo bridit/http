@@ -5,12 +5,14 @@ if (! function_exists('request')) {
    * @param string|array|null $key
    * @param mixed|null $default
    * @return mixed
-   * @throws \DI\DependencyException
-   * @throws \DI\NotFoundException
    */
   function request(string|array $key = null, mixed $default = null): mixed
   {
-    $request = app()->get('request');
+    try {
+      $request = app()->get('request');
+    } catch (\Exception $e) {
+      return $default;
+    }
 
     if (is_null($key)) {
       return $request;
