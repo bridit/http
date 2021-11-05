@@ -2,6 +2,7 @@
 
 namespace Brid\Http;
 
+use Brid\Core\Foundation\Log;
 use Slim\App;
 use Exception;
 use DI\Bridge\Slim\Bridge as SlimBridge;
@@ -68,7 +69,7 @@ class Handler extends \Brid\Core\Handlers\Handler
 
     $request = $this->get('request');
 
-    $errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
+    $errorHandler = new HttpErrorHandler($callableResolver, $responseFactory, Log::getLogger());
     $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
     register_shutdown_function($shutdownHandler);
 
