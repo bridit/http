@@ -9,6 +9,7 @@ use DI\Bridge\Slim\Bridge as SlimBridge;
 use Brid\Http\Exceptions\ShutdownHandler;
 use Brid\Http\Exceptions\HttpErrorHandler;
 use Brid\Http\Middleware\BodyParsingMiddleware;
+use Tuupola\Middleware\CorsMiddleware;
 
 class Handler extends \Brid\Core\Handlers\Handler
 {
@@ -39,6 +40,8 @@ class Handler extends \Brid\Core\Handlers\Handler
   {
 
     $app = SlimBridge::create(app());
+
+    $app->add(new CorsMiddleware(config('cors', [])));
 
     $this->bootRequest();
     $this->bootMiddleware($app);
