@@ -9,9 +9,9 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^8.0|^8.1",
     "bridit/core": "^1.0",
-    "guzzlehttp/psr7": "^1.8",
+    "guzzlehttp/psr7": "^2.5",
     "lcobucci/jwt": "^4.1",
     "php-di/slim-bridge": "^3.1",
     "slim/csrf": "^1.2",
